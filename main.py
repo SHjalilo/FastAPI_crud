@@ -45,12 +45,12 @@ def create_employee(mydata:dict):
         "message":"Added successsfully",
     }
 
-@app.put("/employees/update")
-def update_employee(mydata:dict,emid:int):
+@app.put("/employees/update/{_id}")
+def update_employee(mydata:dict,_id:int):
     name =mydata["name"]
     age=mydata["age"]
     dep=mydata["departement"]
-    sql=f"update employees set name='{name}' , age={age} , departement='{dep}' where id={emid}"
+    sql=f"update employees set name='{name}' , age={age} , departement='{dep}' where id={_id};"
     cnx.setData(sql)
     return {
         "message":"Updated successsfully",

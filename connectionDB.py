@@ -3,6 +3,7 @@ import json
 #----------------------------------------------
 #add this dictionary for configuration to connect with database so easy !
 # change XXXXXX with your informatition don't forget that !?
+#------------------------------------
 config = {
     "host":"XXXXXX",
     "database":"XXXXXX",

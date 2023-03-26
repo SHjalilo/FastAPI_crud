@@ -1,5 +1,6 @@
 import connectionDB as cnx
-from fastapi import FastAPI
+import basePydantic as base
+from fastapi import FastAPI , HTTPException
 
 #
 app = FastAPI()
@@ -21,6 +22,8 @@ def get_all_employees():
 def get_employees_byId(myid:int):
     sql=f"select * from employees where id={myid}"
     data=cnx.getData(sql)
+    if len(data)==0:
+        raise HTTPException(status_code=500,detail="Record not found !")
     return data
 #-------------------------------------------------
 #
@@ -35,10 +38,10 @@ def delete_employee(myid:int):
     }
 
 @app.post("/employees/create")
-def create_employee(mydata:dict):
-    name =mydata["name"]
-    age=mydata["age"]
-    dep=mydata["departement"]
+def create_employee(mydata:base.employees):
+    name =mydata.name
+    age=mydata.age
+    dep=mydata.departement
     sql=f"insert into employees (name,age,departement)values ('{name}',{age},'{dep}')"
     cnx.setData(sql)
     return {
@@ -46,10 +49,10 @@ def create_employee(mydata:dict):
     }
 
 @app.put("/employees/update/{_id}")
-def update_employee(mydata:dict,_id:int):
-    name =mydata["name"]
-    age=mydata["age"]
-    dep=mydata["departement"]
+def update_employee(mydata:base.employees,_id:int):
+    name =mydata.name
+    age=mydata.age
+    dep=mydata.departement
     sql=f"update employees set name='{name}' , age={age} , departement='{dep}' where id={_id};"
     cnx.setData(sql)
     return {
